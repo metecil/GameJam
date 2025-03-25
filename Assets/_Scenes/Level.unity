@@ -155,6 +155,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: LivesPanel
       objectReference: {fileID: 0}
+    - target: {fileID: 5753195550351196559, guid: 59ccff7a593dcf646b5a277f120870a7, type: 3}
+      propertyPath: m_Name
+      value: UpdatedRemaining
+      objectReference: {fileID: 0}
     - target: {fileID: 7035670669420541340, guid: 59ccff7a593dcf646b5a277f120870a7, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -259,6 +263,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8955730325582464822, guid: 59ccff7a593dcf646b5a277f120870a7, type: 3}
+      propertyPath: m_Spacing
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -270,11 +278,6 @@ PrefabInstance:
 --- !u!224 &253149855 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7035670669420541340, guid: 59ccff7a593dcf646b5a277f120870a7, type: 3}
-  m_PrefabInstance: {fileID: 253149854}
-  m_PrefabAsset: {fileID: 0}
---- !u!224 &253149856 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 8336155248687724131, guid: 59ccff7a593dcf646b5a277f120870a7, type: 3}
   m_PrefabInstance: {fileID: 253149854}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &253149857 stripped
@@ -318,7 +321,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   current: {fileID: 253149858}
   toUpdate: {fileID: 253149857}
-  livesTextContainer: {fileID: 253149856}
+  livesTextContainer: {fileID: 744732433}
   duration: 0.4
 --- !u!1 &356058010
 GameObject:
@@ -483,6 +486,11 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!224 &744732433 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 5960760484123967841, guid: 59ccff7a593dcf646b5a277f120870a7, type: 3}
+  m_PrefabInstance: {fileID: 253149854}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &851636185
 GameObject:
   m_ObjectHideFlags: 0
@@ -889,6 +897,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!224 &1178206874 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 5960760484123967841, guid: d361ad23772178847aab9763219a283e, type: 3}
+  m_PrefabInstance: {fileID: 1574161317}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1311635198
 GameObject:
   m_ObjectHideFlags: 0
@@ -955,6 +968,10 @@ PrefabInstance:
     - target: {fileID: 5600527870309824197, guid: d361ad23772178847aab9763219a283e, type: 3}
       propertyPath: m_Name
       value: ScorePanel
+      objectReference: {fileID: 0}
+    - target: {fileID: 6242219108457717517, guid: d361ad23772178847aab9763219a283e, type: 3}
+      propertyPath: m_text
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7035670669420541340, guid: d361ad23772178847aab9763219a283e, type: 3}
       propertyPath: m_Pivot.x
@@ -1036,6 +1053,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7140170876918653304, guid: d361ad23772178847aab9763219a283e, type: 3}
+      propertyPath: m_text
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8336155248687724131, guid: d361ad23772178847aab9763219a283e, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1056,6 +1077,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8670379354748034741, guid: d361ad23772178847aab9763219a283e, type: 3}
+      propertyPath: m_MinWidth
+      value: 75
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1067,11 +1092,6 @@ PrefabInstance:
 --- !u!224 &1574161318 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7035670669420541340, guid: d361ad23772178847aab9763219a283e, type: 3}
-  m_PrefabInstance: {fileID: 1574161317}
-  m_PrefabAsset: {fileID: 0}
---- !u!224 &1574161319 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 8336155248687724131, guid: d361ad23772178847aab9763219a283e, type: 3}
   m_PrefabInstance: {fileID: 1574161317}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1574161320 stripped
@@ -1115,7 +1135,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentScoreText: {fileID: 1574161321}
   toUpdateScoreText: {fileID: 1574161320}
-  scoreTextContainer: {fileID: 1574161319}
+  scoreTextContainer: {fileID: 1178206874}
   duration: 0.4
 --- !u!1 &2134927517
 GameObject:
@@ -1191,6 +1211,10 @@ PrefabInstance:
     - target: {fileID: 4904720812391339943, guid: 711f35a15f568469f8c382ae40d6f4c8, type: 3}
       propertyPath: m_Center.y
       value: -0.25132924
+      objectReference: {fileID: 0}
+    - target: {fileID: 4904720812391339943, guid: 711f35a15f568469f8c382ae40d6f4c8, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5412242474002767199, guid: 711f35a15f568469f8c382ae40d6f4c8, type: 3}
       propertyPath: m_LocalPosition.x
