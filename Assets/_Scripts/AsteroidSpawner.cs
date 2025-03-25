@@ -30,60 +30,10 @@ public class AsteroidSpawner : MonoBehaviour
         {
             currentScore = GameManager.Instance.GetScore();
         }
-        switch (currentScore)
-        {
-            case > 100: 
-                spawnRate = 1f;
-                minSpeed = 3f;
-                maxSpeed = 7f;
-                break;
-            case > 90: 
-                spawnRate = 1.1f;
-                minSpeed = 2.9f;
-                maxSpeed = 6.8f;
-                break;
-            case > 80:
-                spawnRate = 1.2f;
-                minSpeed = 2.8f;
-                maxSpeed = 6.6f;
-                break;
-            case > 70:
-                spawnRate = 1.3f;
-                minSpeed = 2.7f;
-                maxSpeed = 6.4f;
-                break;
-            case > 60:
-                spawnRate = 1.4f;
-                minSpeed = 2.6f;
-                maxSpeed = 6.2f;
-                break;
-            case > 50:
-                spawnRate = 1.5f;
-                minSpeed = 2.5f;
-                maxSpeed = 6f;
-                break;
-            case > 40:
-                spawnRate = 1.6f;
-                minSpeed = 2.4f;
-                maxSpeed = 5.8f;
-                break;
-            case > 30:
-                spawnRate = 1.7f;
-                minSpeed = 2.3f;
-                maxSpeed = 5.6f;
-                break;
-            case > 20:
-                spawnRate = 1.8f;
-                minSpeed = 2.2f;
-                maxSpeed = 5.4f;
-                break;
-            case > 10:
-                spawnRate = 1.9f;
-                minSpeed = 2.1f;
-                maxSpeed = 5.2f;
-                break;
-        }
 
+        minSpeed = 2f + currentScore / 100f;
+        maxSpeed = 5f + currentScore / 50f;
+        spawnRate = Mathf.Max(0.5f, 2f - currentScore / 100f);
 
         GameObject asteroidPrefab = asteroidPrefabs[Random.Range(0, asteroidPrefabs.Length)];
 
