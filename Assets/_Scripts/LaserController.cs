@@ -15,7 +15,8 @@ public class LaserController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player")) return;
 
-        if (other.gameObject.CompareTag("Asteroid")) GameManager.instance.AddScore(1); 
+        if (other.gameObject.CompareTag("Asteroid2")) GameManager.instance.AddScore(1);
+        if (other.gameObject.CompareTag("Asteroid1")) GameManager.instance.AddScore(2);
         Destroy(other.gameObject);
         Destroy(gameObject);
 
