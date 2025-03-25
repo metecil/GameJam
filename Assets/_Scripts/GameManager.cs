@@ -5,8 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : SingletonMonoBehavior<GameManager>
 {
-    public static GameManager instance; 
+    public static GameManager instance;
 
+    private int bestScore = 0; 
     private int lives = 3;
     private int score = 0;
 
@@ -41,6 +42,8 @@ public class GameManager : SingletonMonoBehavior<GameManager>
     public int GetScore() => score;
     public int GetLives() => lives;
 
+    public int GetBestScore() => bestScore;
+
     public void AddScore(int amount)
     {
         score += amount;
@@ -53,5 +56,9 @@ public class GameManager : SingletonMonoBehavior<GameManager>
         OnLivesUpdated?.Invoke(lives);
     }
 
+    public void SetBestScore(int score)
+    {
+        this.score = score;
+    }
 
 }
