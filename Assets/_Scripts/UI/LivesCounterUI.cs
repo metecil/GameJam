@@ -33,11 +33,15 @@ public class LivesCounterUI : MonoBehaviour
 
     private void UpdateLives(int lives)
     {
-        toUpdate.SetText($"{lives}");
+        if (lives >= 0)
+        {
+            toUpdate.SetText($"{lives}");
 
-        livesTextContainer.DOLocalMoveY(containerInitPosition + moveAmount, duration);
+            livesTextContainer.DOLocalMoveY(containerInitPosition + moveAmount, duration);
 
-        StartCoroutine(ResetLivesContainer(lives));
+            StartCoroutine(ResetLivesContainer(lives));
+
+        };
     }
 
     private IEnumerator ResetLivesContainer(int lives)
