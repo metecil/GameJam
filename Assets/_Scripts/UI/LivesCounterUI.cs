@@ -17,6 +17,8 @@ public class LivesCounterUI : MonoBehaviour
     {
         containerInitPosition = livesTextContainer.localPosition.y;
         moveAmount = current.rectTransform.rect.height;
+       
+
     }
 
     private void OnEnable()
@@ -32,6 +34,7 @@ public class LivesCounterUI : MonoBehaviour
     private void UpdateLives(int lives)
     {
         toUpdate.SetText($"{lives}");
+
         livesTextContainer.DOLocalMoveY(containerInitPosition + moveAmount, duration);
 
         StartCoroutine(ResetLivesContainer(lives));

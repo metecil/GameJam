@@ -7,8 +7,8 @@ public class GameManager : SingletonMonoBehavior<GameManager>
 {
     public static GameManager instance; 
 
-    private int lives;
-    private int score;
+    private int lives = 3;
+    private int score = 0;
 
     public event Action<int> OnScoreUpdated;
     public event Action<int> OnLivesUpdated;
