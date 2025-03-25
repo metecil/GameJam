@@ -29,7 +29,7 @@ public class GameManager : SingletonMonoBehavior<GameManager>
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name == "MainMenu")
+        if (scene.name == "MainMenu" || scene.name == "Level")
         {
             score = 0;
             lives = 3;
@@ -58,7 +58,7 @@ public class GameManager : SingletonMonoBehavior<GameManager>
 
     public void SetBestScore(int score)
     {
-        this.score = score;
+        this.bestScore = score;
     }
 
 }

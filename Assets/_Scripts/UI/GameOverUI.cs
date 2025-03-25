@@ -8,6 +8,7 @@ public class GameOverUI : MonoBehaviour
     [SerializeField] private GameObject gameOverPanel;
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private TextMeshProUGUI bestScoreText;
+    [SerializeField] 
 
     private void OnEnable()
     {
@@ -48,6 +49,11 @@ public class GameOverUI : MonoBehaviour
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); 
+    }
+    public void GoToMainMenu()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("MainMenu");
     }
 
     private IEnumerator DelayedFreeze()
