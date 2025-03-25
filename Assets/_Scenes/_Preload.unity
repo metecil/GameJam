@@ -165,7 +165,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levels:
-  - Level 1
+  - Level
   menuScene: MainMenu
   animationType: 30
   animationDuration: 3

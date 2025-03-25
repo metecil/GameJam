@@ -25,6 +25,16 @@ public class AsteroidSpawner : MonoBehaviour
     {
         if (asteroidPrefabs.Length == 0) return;
 
+        int currentScore = 0; 
+        if (GameManager.Instance != null)
+        {
+            currentScore = GameManager.Instance.GetScore();
+        }
+
+        minSpeed = 2f + currentScore / 100f;
+        maxSpeed = 5f + currentScore / 50f;
+        spawnRate = Mathf.Max(0.5f, 2f - currentScore / 100f);
+
         GameObject asteroidPrefab = asteroidPrefabs[Random.Range(0, asteroidPrefabs.Length)];
 
         Vector3 spawnPos = GetRandomEdgePosition();
