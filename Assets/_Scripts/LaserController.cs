@@ -3,6 +3,7 @@ using UnityEngine;
 public class LaserController : MonoBehaviour
 {
     [SerializeField] private float speed;
+    [SerializeField] private GameObject coinPrefab;
 
     private void Update()
     {
@@ -13,13 +14,30 @@ public class LaserController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Player")) return;
+        // Ignore collisions with the player.
+        if (other.gameObject.CompareTag("Player"))
+            return;
 
-        if (other.gameObject.CompareTag("Asteroid2")) GameManager.instance.AddScore(1);
-        if (other.gameObject.CompareTag("Asteroid1")) GameManager.instance.AddScore(2);
+        // If the laser hits an asteroid, add score and drop a coin.
+        if (other.gameObject.CompareTag("Asteroid2"))
+        {
+            GameManager.instance.AddScore(1);
+            if (coinPrefab != null)
+            {
+                Instantiate(coinPrefab, other.transform.position, Quaternion.identity);
+            }
+        }
+        else if (other.gameObject.CompareTag("Asteroid1"))
+        {
+            GameManager.instance.AddScore(2);
+            if (coinPrefab != null)
+            {
+                Instantiate(coinPrefab, other.transform.position, Quaternion.identity);
+            }
+        }
+
+        // Destroy the asteroid and the laser.
         Destroy(other.gameObject);
         Destroy(gameObject);
-
-       
     }
 }

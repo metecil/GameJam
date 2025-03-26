@@ -140,4 +140,18 @@ public class PlayerController : MonoBehaviour
         //audioManager?.StopSfx(thrustAudioClip);
         //GameObject.FindWithTag("GameController")?.GetComponent<GameController>()?.GameOver();
     }
+
+    public void IncreaseMovementSpeed(float amount)
+    {
+        movementSpeed += amount;
+        rotationSpeed += amount;
+        Debug.Log("New movementSpeed: " + movementSpeed);
+    }
+
+
+    public void DecreaseLaserCooldown(float amount)
+    {
+        cooldown = Mathf.Max(0.1f, cooldown - amount);
+    }
+
 }
