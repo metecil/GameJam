@@ -152,3 +152,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8bd518d547494f40aae71421b223465, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  explosionPrefab: {fileID: 8662504296808664658, guid: ef2881133ec894dcda8758a835a7914c, type: 3}
+  explosionSound: {fileID: 8300000, guid: 28426bac4768746deb207b01773dfcba, type: 3}

@@ -11,8 +11,7 @@ public class PlayerController : MonoBehaviour
     //[SerializeField] private GameObject thruster;
     [SerializeField] private float cooldown = 1f;
 
-    //[SerializeField] private AudioClip thrustAudioClip;
-    //[SerializeField] private AudioClip fireAudioClip;
+    [SerializeField] private AudioClip fireAudioClip; // Laser fire sound effect
 
     // New thruster logic fields:
     [SerializeField] private GameObject thrusterDisplay; // GameObject that displays the thruster sprite
@@ -37,9 +36,7 @@ public class PlayerController : MonoBehaviour
         colliders = GetComponents<Collider>();
         rigidBody = GetComponent<Rigidbody>();
 
-        // You can also adjust the Rigidbody's drag in the Inspector.
-        // For example, try setting the Linear Drag to a value between 0.5 and 2.
-
+        // Optionally adjust Rigidbody's drag in the Inspector.
         //audioManager = GameObject.FindGameObjectWithTag("AudioManager")?.GetComponent<AudioManager>();
 
         //thrusterParticles = thruster.GetComponent<ParticleSystem>();
@@ -73,6 +70,13 @@ public class PlayerController : MonoBehaviour
 
             // Spawn laser directly at the cannon's pivot point.
             Instantiate(laser, laserOriginTransform.position, laserOriginTransform.rotation);
+            
+            // Play the laser fire sound at the cannon's position.
+            if (fireAudioClip != null)
+            {
+                AudioSource.PlayClipAtPoint(fireAudioClip, laserOriginTransform.position);
+            }
+            
             time = cooldown;
             //audioManager?.PlaySfx(fireAudioClip);
         }

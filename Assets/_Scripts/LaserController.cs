@@ -12,20 +12,18 @@ public class LaserController : MonoBehaviour
     {
         mainCamera = Camera.main;
         
-        // Calculate screen width and height in world units for an orthographic camera.
+        // Calculate screen dimensions (for an orthographic camera).
         float screenHeight = 2f * mainCamera.orthographicSize;
         float screenWidth = screenHeight * mainCamera.aspect;
         maxDistance = Mathf.Sqrt(screenWidth * screenWidth + screenHeight * screenHeight);
-        
     }
 
     private void Update()
     {
-        // Calculate the distance traveled this frame and add it to the total.
+        // Move the laser and accumulate the traveled distance.
         float deltaDistance = speed * Time.deltaTime;
         totalDistanceTraveled += deltaDistance;
         transform.Translate(Vector3.up * deltaDistance);
-
 
         if (totalDistanceTraveled > maxDistance)
         {
@@ -35,14 +33,28 @@ public class LaserController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        // Ignore collisions with the player.
         if (other.gameObject.CompareTag("Player"))
             return;
 
-        if (other.gameObject.CompareTag("Asteroid2"))
-            GameManager.instance.AddScore(1);
-        if (other.gameObject.CompareTag("Asteroid1"))
-            GameManager.instance.AddScore(2);
-        
+        // If the laser hits an asteroid, trigger explosion effects.
+        if (other.gameObject.CompareTag("Asteroid1") || other.gameObject.CompareTag("Asteroid2"))
+        {
+            // Try to get the AsteroidController and call TriggerExplosion.
+            AsteroidController asteroidCtrl = other.gameObject.GetComponent<AsteroidController>();
+            if (asteroidCtrl != null)
+            {
+                asteroidCtrl.TriggerExplosion();
+            }
+            
+            // Update score based on asteroid type.
+            if (other.gameObject.CompareTag("Asteroid2"))
+                GameManager.instance.AddScore(1);
+            else if (other.gameObject.CompareTag("Asteroid1"))
+                GameManager.instance.AddScore(2);
+        }
+
+        // Destroy the asteroid and the laser.
         Destroy(other.gameObject);
         Destroy(gameObject);
     }
