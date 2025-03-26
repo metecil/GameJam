@@ -2,7 +2,6 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using TMPro;
 
 public class GameManager : SingletonMonoBehavior<GameManager>
 {
@@ -60,25 +59,6 @@ public class GameManager : SingletonMonoBehavior<GameManager>
     public void SetBestScore(int score)
     {
         this.bestScore = score;
-    }
-
-    private int coins = 0;
-    public TextMeshProUGUI coinText;
-
-    public int GetCoins() => coins;
-
-    public void AddCoins(int amount)
-    {
-        coins += amount;
-        UpdateCoinUI();
-    }
-    private void UpdateCoinUI()
-    {
-        if (coinText != null)
-        {
-            // Update the TextMeshPro text to show coin count as x1, x2, x3, etc.
-            coinText.text = "x" + coins;
-        }
     }
 
 }

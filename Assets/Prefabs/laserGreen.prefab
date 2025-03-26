@@ -103,7 +103,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 50
-  coinPrefab: {fileID: 2781739412480977415, guid: 1a4b6b6e9c8e2dc4198d1d5cf795035f, type: 3}
 --- !u!136 &-4475196722397268126
 CapsuleCollider:
   m_ObjectHideFlags: 0
