@@ -13,10 +13,10 @@ GameObject:
   - component: {fileID: 3657361087828696030}
   - component: {fileID: 689167072780743078}
   - component: {fileID: -7188239012150716328}
-  - component: {fileID: -3367657110158391241}
+  - component: {fileID: -1670885928402888344}
   m_Layer: 0
-  m_Name: Asteroid2
-  m_TagString: Asteroid2
+  m_Name: Asteroid2Big
+  m_TagString: Asteroid2Big
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -31,7 +31,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 3.46, y: 0, z: 0}
-  m_LocalScale: {x: 3, y: 3, z: 1}
+  m_LocalScale: {x: 6, y: 6, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -156,11 +156,11 @@ MonoBehaviour:
   explosionPrefab: {fileID: 8662504296808664658, guid: ef2881133ec894dcda8758a835a7914c, type: 3}
   explosionSound: {fileID: 8300000, guid: 28426bac4768746deb207b01773dfcba, type: 3}
   explosionLifetime: 2
-  asteroid1Prefab: {fileID: 0}
-  asteroid2Prefab: {fileID: 0}
+  asteroid1Prefab: {fileID: 7758683776579824377, guid: 676689ce69069f34ba93257ce108d744, type: 3}
+  asteroid2Prefab: {fileID: 443156352104785246, guid: f0676938d8b07dc43ba8116259c87b37, type: 3}
   splitAsteroidMinSpeed: 2
   splitAsteroidMaxSpeed: 5
---- !u!114 &-3367657110158391241
+--- !u!114 &-1670885928402888344
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
