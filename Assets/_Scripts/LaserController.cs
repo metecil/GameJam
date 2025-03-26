@@ -38,7 +38,7 @@ public class LaserController : MonoBehaviour
             return;
 
         // If the laser hits an asteroid, trigger explosion effects.
-        if (other.gameObject.CompareTag("Asteroid1") || other.gameObject.CompareTag("Asteroid2"))
+        if (other.gameObject.CompareTag("Asteroid1Big") || other.gameObject.CompareTag("Asteroid2Big"))
         {
             // Try to get the AsteroidController and call TriggerExplosion.
             AsteroidController asteroidCtrl = other.gameObject.GetComponent<AsteroidController>();
@@ -48,9 +48,9 @@ public class LaserController : MonoBehaviour
             }
             
             // Update score based on asteroid type.
-            if (other.gameObject.CompareTag("Asteroid2"))
+            if (other.gameObject.CompareTag("Asteroid2Big"))
                 GameManager.instance.AddScore(1);
-            else if (other.gameObject.CompareTag("Asteroid1"))
+            else if (other.gameObject.CompareTag("Asteroid1Big"))
                 GameManager.instance.AddScore(2);
         }
 
