@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &8841878815042398798
+--- !u!1 &559469573016519402
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,8 +8,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 6209514489195064053}
-  - component: {fileID: 1385078197387474043}
+  - component: {fileID: 2673574543410059681}
+  - component: {fileID: 6212247228723056782}
   m_Layer: 0
   m_Name: AsteroidSpawner
   m_TagString: Untagged
@@ -17,13 +17,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &6209514489195064053
+--- !u!4 &2673574543410059681
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8841878815042398798}
+  m_GameObject: {fileID: 559469573016519402}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 3.2320926, y: 2.7468586, z: 20.342634}
@@ -32,22 +32,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1385078197387474043
+--- !u!114 &6212247228723056782
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8841878815042398798}
+  m_GameObject: {fileID: 559469573016519402}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5869427039b01844d8d9b80638697f0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   asteroidPrefabs:
-  - {fileID: 443156352104785246, guid: f0676938d8b07dc43ba8116259c87b37, type: 3}
-  - {fileID: 7758683776579824377, guid: 676689ce69069f34ba93257ce108d744, type: 3}
-  spawnRate: 2
+  - {fileID: 443156352104785246, guid: d7b00107f00c24506a12755b97131b38, type: 3}
+  - {fileID: 7758683776579824377, guid: 736ed65fc12f74e4688360aecbdb9901, type: 3}
   spawnDistance: 10
   minSpeed: 2
   maxSpeed: 5
+  initialWaveCount: 6
+  spawnDuration: 15
+  waveIncrement: 2
