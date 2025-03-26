@@ -28,12 +28,21 @@ public class LaserController : MonoBehaviour
             }
         }
         else if (other.gameObject.CompareTag("Asteroid1"))
+        // If the laser hits an asteroid, trigger explosion effects.
+        if (other.gameObject.CompareTag("Asteroid1Big") || other.gameObject.CompareTag("Asteroid2Big"))
         {
             GameManager.instance.AddScore(2);
             if (coinPrefab != null)
             {
                 Instantiate(coinPrefab, other.transform.position, Quaternion.identity);
             }
+
+            
+            // Update score based on asteroid type.
+            if (other.gameObject.CompareTag("Asteroid2Big"))
+                GameManager.instance.AddScore(1);
+            else if (other.gameObject.CompareTag("Asteroid1Big"))
+                GameManager.instance.AddScore(2);
         }
 
         // Destroy the asteroid and the laser.
