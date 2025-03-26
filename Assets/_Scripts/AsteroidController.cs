@@ -92,6 +92,7 @@ public class AsteroidController : MonoBehaviour
             TriggerExplosion();
             Destroy(gameObject);
         }
+
     }
 
     private void OnBecameInvisible()

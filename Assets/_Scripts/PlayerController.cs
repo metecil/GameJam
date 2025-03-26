@@ -5,20 +5,13 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float rotationSpeed;
     [SerializeField] private float movementSpeed;
-    [SerializeField] private float maxSpeed = 10f; // Maximum speed limit
     [SerializeField] private GameObject laser;
     [SerializeField] private GameObject[] cannons;
     //[SerializeField] private GameObject thruster;
     [SerializeField] private float cooldown = 1f;
 
-    [SerializeField] private AudioClip fireAudioClip; // Laser fire sound effect
-
-    // New thruster logic fields:
-    [SerializeField] private GameObject thrusterDisplay; // GameObject that displays the thruster sprite
-    [SerializeField] private Sprite[] thrusterSprites;     // Array of 5 thruster sprites (levels 1 to 5)
-    [SerializeField] private float thrusterAccelerationTime = 1f; // Time required to reach the highest thruster level
-    [SerializeField] private Vector3 thrusterLocalOffset = new Vector3(0, -1f, 0); // Custom local offset from ship's pivot for the thruster
-    private float thrusterTimer = 0f;
+    //[SerializeField] private AudioClip thrustAudioClip;
+    //[SerializeField] private AudioClip fireAudioClip;
 
     private Rigidbody rigidBody;
     private int currentCannon = 0;
@@ -27,6 +20,7 @@ public class PlayerController : MonoBehaviour
     //private ParticleSystem thrusterParticles;
 
     private float time = 0f;
+
     private Collider[] colliders;
     private Camera mainCamera;
 
@@ -36,7 +30,6 @@ public class PlayerController : MonoBehaviour
         colliders = GetComponents<Collider>();
         rigidBody = GetComponent<Rigidbody>();
 
-        // Optionally adjust Rigidbody's drag in the Inspector.
         //audioManager = GameObject.FindGameObjectWithTag("AudioManager")?.GetComponent<AudioManager>();
 
         //thrusterParticles = thruster.GetComponent<ParticleSystem>();
@@ -45,58 +38,46 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        // Update the thruster display's position and rotation so that it's always
-        // at the designated local offset relative to the ship's geometry.
-        thrusterDisplay.transform.position = transform.TransformPoint(thrusterLocalOffset);
-        thrusterDisplay.transform.rotation = transform.rotation;
-
-        // Laser firing logic
+        // Laser
         if (time > 0f)
         {
             time -= Time.deltaTime;
         }
         else if (Input.GetKey(KeyCode.Space))
         {
-            // Make laser originate from alternate cannon on each shot
+            // Make laser originate from alternate canon on each shot
             var laserOriginTransform = transform;
             if (cannons.Length > 0)
             {
                 laserOriginTransform = cannons[currentCannon++].transform;
+
                 if (currentCannon >= cannons.Length)
                 {
                     currentCannon = 0;
                 }
             }
 
-            // Spawn laser directly at the cannon's pivot point.
+            // Spawn laser directly at the canon's pivot point.
             Instantiate(laser, laserOriginTransform.position, laserOriginTransform.rotation);
-            
-            // Play the laser fire sound at the cannon's position.
-            if (fireAudioClip != null)
-            {
-                AudioSource.PlayClipAtPoint(fireAudioClip, laserOriginTransform.position);
-            }
-            
             time = cooldown;
+
             //audioManager?.PlaySfx(fireAudioClip);
         }
 
-        // Player movement and thruster logic
+        // Player movements
         if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W))
         {
+            //audioManager?.PlaySfx(thrustAudioClip, true);
             rigidBody.AddForce(transform.up * (movementSpeed * Time.deltaTime));
-            // Increase thruster timer and update sprite based on forward acceleration.
-            thrusterTimer += Time.deltaTime;
-            thrusterTimer = Mathf.Clamp(thrusterTimer, 0f, thrusterAccelerationTime);
-            int level = Mathf.FloorToInt((thrusterTimer / thrusterAccelerationTime) * thrusterSprites.Length);
-            level = Mathf.Clamp(level, 0, thrusterSprites.Length - 1);
-            thrusterDisplay.GetComponent<SpriteRenderer>().sprite = thrusterSprites[level];
+            //if (!thrusterParticles.isPlaying)
+            //{
+            //    thrusterParticles.Play();
+            //}
         }
         else
         {
-            // Reset thruster when not accelerating forward.
-            thrusterTimer = 0f;
-            thrusterDisplay.GetComponent<SpriteRenderer>().sprite = thrusterSprites[0];
+            //thrusterParticles.Stop();
+            //audioManager?.StopSfx(thrustAudioClip);
         }
 
         if (Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S))
@@ -114,10 +95,36 @@ public class PlayerController : MonoBehaviour
             transform.Rotate(0, 0, -rotationSpeed * Time.deltaTime);
         }
 
-        // Clamp the spaceship's velocity to prevent it from exceeding maxSpeed.
-        if (rigidBody.linearVelocity.magnitude > maxSpeed)
+        // Move through screen borders using viewport wrapping
+        Vector3 viewportPos = mainCamera.WorldToViewportPoint(transform.position);
+        bool wrapped = false;
+
+        if (viewportPos.x < 0f)
         {
-            rigidBody.linearVelocity = rigidBody.linearVelocity.normalized * maxSpeed;
+            viewportPos.x = 1f;
+            wrapped = true;
+        }
+        else if (viewportPos.x > 1f)
+        {
+            viewportPos.x = 0f;
+            wrapped = true;
+        }
+        if (viewportPos.y < 0f)
+        {
+            viewportPos.y = 1f;
+            wrapped = true;
+        }
+        else if (viewportPos.y > 1f)
+        {
+            viewportPos.y = 0f;
+            wrapped = true;
+        }
+
+        if (wrapped)
+        {
+            Vector3 newWorldPos = mainCamera.ViewportToWorldPoint(viewportPos);
+            newWorldPos.z = 0f;  // Ensure Z remains 0 in a 2D game.
+            transform.position = newWorldPos;
         }
     }
 
@@ -133,4 +140,19 @@ public class PlayerController : MonoBehaviour
         //audioManager?.StopSfx(thrustAudioClip);
         //GameObject.FindWithTag("GameController")?.GetComponent<GameController>()?.GameOver();
     }
+
+    public void IncreaseMovementSpeed(float amount)
+    {
+        movementSpeed += amount;
+        rotationSpeed += amount;
+        Debug.Log("New movementSpeed: " + movementSpeed);
+    }
+
+
+    public void DecreaseLaserCooldown(float amount)
+    {
+        cooldown = Mathf.Max(0.1f, cooldown - amount);
+    }
+
+}
 }
