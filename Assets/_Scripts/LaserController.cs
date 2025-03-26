@@ -17,6 +17,7 @@ public class LaserController : MonoBehaviour
         float screenWidth = screenHeight * mainCamera.aspect;
         maxDistance = Mathf.Sqrt(screenWidth * screenWidth + screenHeight * screenHeight);
     }
+    [SerializeField] private GameObject coinPrefab;
 
     private void Update()
     {
@@ -34,7 +35,9 @@ public class LaserController : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         // Ignore collisions with the player.
+        // Ignore collisions with the player.
         if (other.gameObject.CompareTag("Player"))
+           
             return;
 
         // If the laser hits an asteroid, trigger explosion effects.
