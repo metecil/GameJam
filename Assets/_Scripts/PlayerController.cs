@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float maxSpeed = 10f; // Maximum speed limit
     [SerializeField] private GameObject laser;
     [SerializeField] private GameObject[] cannons;
-    //[SerializeField] private GameObject thruster;
+    // [SerializeField] private GameObject thruster;
     [SerializeField] private float cooldown = 1f;
 
     [SerializeField] private AudioClip fireAudioClip; // Laser fire sound effect
@@ -24,7 +24,7 @@ public class PlayerController : MonoBehaviour
     private int currentCannon = 0;
 
     //private AudioManager audioManager;
-    //private ParticleSystem thrusterParticles;
+    private ParticleSystem thrusterParticles;
 
     private float time = 0f;
     private Collider[] colliders;
@@ -39,8 +39,8 @@ public class PlayerController : MonoBehaviour
         // Optionally adjust Rigidbody's drag in the Inspector.
         //audioManager = GameObject.FindGameObjectWithTag("AudioManager")?.GetComponent<AudioManager>();
 
-        //thrusterParticles = thruster.GetComponent<ParticleSystem>();
-        //thrusterParticles.Stop();
+        // thrusterParticles = thruster.GetComponent<ParticleSystem>();
+        // thrusterParticles.Stop();
     }
 
     private void Update()
@@ -133,4 +133,18 @@ public class PlayerController : MonoBehaviour
         //audioManager?.StopSfx(thrustAudioClip);
         //GameObject.FindWithTag("GameController")?.GetComponent<GameController>()?.GameOver();
     }
+       public void IncreaseMovementSpeed(float amount)
+    {
+        movementSpeed += amount;
+        rotationSpeed += amount;
+        Debug.Log("New movementSpeed: " + movementSpeed);
+    }
+
+
+    public void DecreaseLaserCooldown(float amount)
+    {
+        cooldown = Mathf.Max(0.1f, cooldown - amount);
+    }
+
+
 }
