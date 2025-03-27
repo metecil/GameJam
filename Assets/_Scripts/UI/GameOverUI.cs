@@ -39,11 +39,16 @@ public class GameOverUI : MonoBehaviour
 
     private void ShowGameOver()
     {
+        GameManager.Instance.ResetCoins();
+
         gameOverPanel.SetActive(true);
 
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
 
         StartCoroutine(DelayedFreeze());
     }
+
 
     public void RestartGame()
     {

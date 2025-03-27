@@ -36,8 +36,23 @@ public class GameManager : SingletonMonoBehavior<GameManager>
             lives = 3;
             OnScoreUpdated?.Invoke(score);
             OnLivesUpdated?.Invoke(lives);
+            
+            // If this is the Level scene, reassign the coinText reference.
+            if (scene.name == "Level")
+            {
+                // Make sure the UI GameObject in your scene is named "CoinText"
+                GameObject coinTextObject = GameObject.Find("CoinText");
+                if (coinTextObject != null)
+                {
+                    coinText = coinTextObject.GetComponent<TextMeshProUGUI>();
+                    UpdateCoinUI();
+                }
+                else
+                {
+                    Debug.LogWarning("CoinText object not found. Check that your UI element is named 'CoinText'.");
+                }
+            }
         }
-
     }
 
     public int GetScore() => score;
@@ -72,6 +87,7 @@ public class GameManager : SingletonMonoBehavior<GameManager>
         coins += amount;
         UpdateCoinUI();
     }
+
     private void UpdateCoinUI()
     {
         if (coinText != null)
@@ -81,4 +97,9 @@ public class GameManager : SingletonMonoBehavior<GameManager>
         }
     }
 
+    public void ResetCoins()
+    {
+        coins = 0;
+        UpdateCoinUI();
+    }
 }

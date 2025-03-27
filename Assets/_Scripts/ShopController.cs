@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 public class ShopUIController : MonoBehaviour
 {
     [Header("Assign your Shop Canvas GameObject from the scene (initially inactive)")]
-    public GameObject shopCanvas;
+    [SerializeField] private GameObject shopCanvas;
 
     private bool shopOpen = false;
     private float previousTimeScale = 1f;

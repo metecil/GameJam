@@ -125,6 +125,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coinValue: 1
+  timeout: 10
+  pickupSound: {fileID: 8300000, guid: ca1150f7ea811ba40a614f341d497ee3, type: 3}
 --- !u!136 &5891588960180580004
 CapsuleCollider:
   m_ObjectHideFlags: 0
