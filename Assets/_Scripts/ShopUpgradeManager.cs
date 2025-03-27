@@ -4,11 +4,11 @@ using UnityEngine.UI;
 public class ShopUpgradeManager : MonoBehaviour
 {
     [Header("Reference to the PlayerController")]
-    public PlayerController player;
+    [SerializeField] private PlayerController player;
 
     [Header("UI Sliders for Visual Upgrades")]
-    public Slider thrustersSlider;  // Visual indicator for thrusters upgrades
-    public Slider lasersSlider;     // Visual indicator for lasers upgrades
+    [SerializeField] private Slider thrustersSlider;  // Visual indicator for thrusters upgrades
+    [SerializeField] private Slider lasersSlider;     // Visual indicator for lasers upgrades
 
     [Header("Upgrade Settings")]
     public int maxUpgradeLevel = 3;
@@ -16,12 +16,12 @@ public class ShopUpgradeManager : MonoBehaviour
     private int currentLaserUpgrade = 0;
 
     // Each upgrade costs 5 coins.
-    public int upgradeCost = 5;
+    [SerializeField] private int upgradeCost = 5;
 
     // Amount by which each upgrade affects the player's attributes.
-    public float thrusterSpeedIncrease = 30.0f;    // Increase in movement speed per upgrade
-    public float rotationSpeedIncrease = 10.0f;    // Increase in movement speed per upgrade
-    public float laserCooldownDecrease = 0.5f;      // Decrease in laser cooldown per upgrade
+    [SerializeField] private float thrusterSpeedIncrease = 30.0f;    // Increase in movement speed per upgrade
+    [SerializeField] private float rotationSpeedIncrease = 10.0f;    // Increase in movement speed per upgrade
+    [SerializeField] private float laserCooldownDecrease = 0.5f;      // Decrease in laser cooldown per upgrade
 
     void Start()
     {
@@ -51,7 +51,7 @@ public class ShopUpgradeManager : MonoBehaviour
             
             currentThrusterUpgrade++;
             // Increase player's movement speed.
-            player.IncreaseMovementSpeed(thrusterSpeedIncrease);
+            player.IncreaseMovementSpeed(thrusterSpeedIncrease, rotationSpeedIncrease);
 
             // Update the slider to reflect the new upgrade level.
             if (thrustersSlider != null)

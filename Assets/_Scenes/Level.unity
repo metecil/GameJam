@@ -546,6 +546,10 @@ PrefabInstance:
       propertyPath: thruster
       value: 
       objectReference: {fileID: 599754823}
+    - target: {fileID: 2579115445068509541, guid: 77d1e3fd9e1b94787b5dc8983ffccffe, type: 3}
+      propertyPath: rotationSpeed
+      value: 130
+      objectReference: {fileID: 0}
     - target: {fileID: 2630591132804216914, guid: 77d1e3fd9e1b94787b5dc8983ffccffe, type: 3}
       propertyPath: m_Name
       value: SpaceShip
@@ -1789,7 +1793,7 @@ MonoBehaviour:
   maxUpgradeLevel: 3
   upgradeCost: 5
   thrusterSpeedIncrease: 50
-  rotationSpeedIncrease: 15
+  rotationSpeedIncrease: 20
   laserCooldownDecrease: 0.15
 --- !u!1 &1459838552
 GameObject:
@@ -1848,7 +1852,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: x3
+  m_text: x0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8c07c7764531e3e459ab96396d7b6bf8, type: 2}
   m_sharedMaterial: {fileID: -1260662883477943528, guid: 8c07c7764531e3e459ab96396d7b6bf8, type: 2}

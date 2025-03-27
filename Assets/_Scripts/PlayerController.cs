@@ -133,10 +133,10 @@ public class PlayerController : MonoBehaviour
         //audioManager?.StopSfx(thrustAudioClip);
         //GameObject.FindWithTag("GameController")?.GetComponent<GameController>()?.GameOver();
     }
-       public void IncreaseMovementSpeed(float amount)
+       public void IncreaseMovementSpeed(float movementAmount, float rotationAmount)
     {
-        movementSpeed += amount;
-        rotationSpeed += amount;
+        movementSpeed += movementAmount;
+        rotationSpeed += rotationAmount;
         Debug.Log("New movementSpeed: " + movementSpeed);
     }
 
