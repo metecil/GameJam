@@ -8,9 +8,9 @@ public class AsteroidSpawner : MonoBehaviour
     [SerializeField] private float minSpeed = 2f;
     [SerializeField] private float maxSpeed = 5f;
 
-    [SerializeField] private int initialWaveCount = 6;      // Number of asteroids in the first wave
+    [SerializeField] private int initialWaveCount = 4;      // Number of asteroids in the first wave
     [SerializeField] private float spawnDuration = 15f;       // Duration to spawn the wave
-    [SerializeField] private int waveIncrement = 2;           // How many more asteroids to spawn in the next wave
+    [SerializeField] private int waveIncrement = 1;           // How many more asteroids to spawn in the next wave
 
     private int currentWaveCount;
     private Camera mainCamera;

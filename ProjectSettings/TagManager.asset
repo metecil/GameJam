@@ -7,6 +7,9 @@ TagManager:
   - Asteroid
   - Asteroid1
   - Asteroid2
+  - Laser
+  - Asteroid1Big
+  - Asteroid2Big
   layers:
   - Default
   - TransparentFX
