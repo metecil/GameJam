@@ -498,7 +498,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gravityActive: 0
-  gravityConstant: 10
+  gravityConstant: 5
   countdownText: {fileID: 1729565637}
   countdownStart: 5
 --- !u!1 &357648775
@@ -901,7 +901,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5948067907294040529, guid: d2ed1727ff6100c43ba0e5a6919ef8d8, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8289750262145691706, guid: d2ed1727ff6100c43ba0e5a6919ef8d8, type: 3}
       propertyPath: m_Pivot.x
@@ -1332,6 +1332,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &794623508 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 734912819597801208, guid: d5fbf3712437f43a884c2fd37d3b04e5, type: 3}
+  m_PrefabInstance: {fileID: 95091706}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be91852039cb8454f9fcaf84f92f75da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &851636185
@@ -1810,7 +1821,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8819f85e33101c3448df03c8fa9c54e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  player: {fileID: 794623508}
   thrustersSlider: {fileID: 1348301672}
   lasersSlider: {fileID: 753293288}
   maxUpgradeLevel: 3

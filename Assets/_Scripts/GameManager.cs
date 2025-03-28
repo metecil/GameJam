@@ -61,21 +61,6 @@ public class GameManager : SingletonMonoBehavior<GameManager>
             OnScoreUpdated?.Invoke(score);
             OnLivesUpdated?.Invoke(lives);
             
-            // If this is the Level scene, reassign the coinText reference.
-            if (scene.name == "Level")
-            {
-                GameObject coinTextObject = GameObject.Find("CoinText");
-                if (coinTextObject != null)
-                {
-                    coinText = coinTextObject.GetComponent<TextMeshProUGUI>();
-                    UpdateCoinUI();
-                }
-                else
-                {
-                    Debug.LogWarning("CoinText object not found. Check that your UI element is named 'CoinText'.");
-                }
-            }
-            
             // Start gravity switch routine when the level loads.
             StartCoroutine(GravitySwitchRoutine());
         }
