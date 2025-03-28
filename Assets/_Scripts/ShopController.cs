@@ -1,85 +1,95 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using Cursor = UnityEngine.Cursor;
+using System;
 
 public class ShopUIController : MonoBehaviour
 {
-    [Header("Assign your Shop Canvas GameObject from the scene (initially inactive)")]
-    [SerializeField] private GameObject shopCanvas;
-
+    // Reference to the shop panel (child GameObject) that is toggled.
+    // This shop panel should be assigned in the Inspector and can be inactive by default.
+    [SerializeField] private GameObject shopPanel;
+    
     private bool shopOpen = false;
     private float previousTimeScale = 1f;
-
-    // Target resolution for WebGL (960x540)
     private Vector2 targetResolution = new Vector2(960, 540);
 
-    void Update()
+    private void Awake()
     {
-        if (Input.GetKeyDown(KeyCode.B))
+        // Ensure that this GameObject (the one with ShopUIController) is active.
+        if (!gameObject.activeInHierarchy)
         {
-            ToggleShop();
+            Debug.LogError("ShopUIController is inactive. Make sure its GameObject is active so it can subscribe to events.");
         }
     }
 
-    void ToggleShop()
+    private void OnEnable()
+    {
+        // Subscribe to the event from GameManager.
+        GameManager.Instance.OnShopToggleRequested += ToggleShop;
+    }
+
+    private void OnDisable()
+    {
+        GameManager.Instance.OnShopToggleRequested -= ToggleShop;
+    }
+
+    public void ToggleShop()
     {
         if (!shopOpen)
         {
-            // Pause game
+            Debug.Log("Attempting to open shop...");
+            if (shopPanel == null)
+            {
+                Debug.LogError("Shop Panel reference is missing!");
+                return;
+            }
+            
+            // Pause the game and show the shop panel.
             previousTimeScale = Time.timeScale;
             Time.timeScale = 0f;
-
-            // Unlock and show the mouse cursor for UI interaction
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
 
-            // Enable the shop canvas
-            shopCanvas.SetActive(true);
+            shopPanel.SetActive(true);
+            Debug.Log("Shop panel active: " + shopPanel.activeSelf);
+            AdjustCanvasScaler();
 
-            // (Optional) Adjust the Canvas Scaler to use the target resolution.
-            // If your shop canvas already has these settings in the editor, this block might be redundant.
-            CanvasScaler scaler = shopCanvas.GetComponent<CanvasScaler>();
-            if (scaler == null)
+            if (UnityEngine.Object.FindFirstObjectByType<EventSystem>() == null)
             {
-                // If the Canvas Scaler is on a child object, try to find it.
-                scaler = shopCanvas.GetComponentInChildren<CanvasScaler>();
+                new GameObject("EventSystem", typeof(EventSystem), typeof(StandaloneInputModule));
             }
-            if (scaler != null)
-            {
-                scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
-                scaler.referenceResolution = targetResolution;
-                scaler.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
-                scaler.matchWidthOrHeight = 0.5f;
-            }
-
-            // Force a layout rebuild to ensure margins and sizes update immediately.
-            RectTransform rect = shopCanvas.GetComponent<RectTransform>();
-            if (rect != null)
-            {
-                LayoutRebuilder.ForceRebuildLayoutImmediate(rect);
-            }
-
-            // Ensure an EventSystem exists in the scene (for button clicks)
-            if (Object.FindFirstObjectByType<EventSystem>() == null)
-            {
-                GameObject eventSystem = new GameObject("EventSystem", typeof(EventSystem), typeof(StandaloneInputModule));
-            }
-
+            
             shopOpen = true;
         }
         else
         {
-            // Resume game
+            Debug.Log("Closing shop...");
+            // Resume the game and hide the shop panel.
             Time.timeScale = previousTimeScale;
-
-            // Lock and hide the cursor again for gameplay
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
 
-            // Disable the shop canvas
-            shopCanvas.SetActive(false);
-
+            shopPanel.SetActive(false);
+            Debug.Log("Shop panel active: " + shopPanel.activeSelf);
             shopOpen = false;
+        }
+    }
+
+    private void AdjustCanvasScaler()
+    {
+        CanvasScaler scaler = GetComponent<CanvasScaler>() ?? GetComponentInChildren<CanvasScaler>();
+        if (scaler != null)
+        {
+            scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+            scaler.referenceResolution = targetResolution;
+            scaler.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
+            scaler.matchWidthOrHeight = 0.5f;
+        }
+        RectTransform rect = GetComponent<RectTransform>();
+        if (rect != null)
+        {
+            LayoutRebuilder.ForceRebuildLayoutImmediate(rect);
         }
     }
 }

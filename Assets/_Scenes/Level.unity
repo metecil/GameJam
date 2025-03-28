@@ -390,7 +390,6 @@ GameObject:
   - component: {fileID: 356058013}
   - component: {fileID: 356058011}
   - component: {fileID: 356058014}
-  - component: {fileID: 356058015}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -410,9 +409,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1adf57cbc00f334c802a95a204db709, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OnMove:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!4 &356058013
 Transform:
   m_ObjectHideFlags: 0
@@ -440,20 +436,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88a3dfe015e34a6b8f942c6159e59f8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coinText: {fileID: 1459838554}
---- !u!114 &356058015
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 356058010}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 249b2e9dddcdc574e8733d9a28bcb933, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shopCanvas: {fileID: 700880038}
 --- !u!1 &357648775
 GameObject:
   m_ObjectHideFlags: 0
@@ -794,6 +776,10 @@ PrefabInstance:
       propertyPath: m_RaycastTarget
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1751833455910722999, guid: d2ed1727ff6100c43ba0e5a6919ef8d8, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3076645839908610740, guid: d2ed1727ff6100c43ba0e5a6919ef8d8, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -801,6 +787,18 @@ PrefabInstance:
     - target: {fileID: 3076645839908610740, guid: d2ed1727ff6100c43ba0e5a6919ef8d8, type: 3}
       propertyPath: m_LocalScale.y
       value: 3.46875
+      objectReference: {fileID: 0}
+    - target: {fileID: 4022554078425101177, guid: d2ed1727ff6100c43ba0e5a6919ef8d8, type: 3}
+      propertyPath: m_Transition
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4022554078425101177, guid: d2ed1727ff6100c43ba0e5a6919ef8d8, type: 3}
+      propertyPath: m_AnimationTriggers.m_PressedTrigger
+      value: Pressed
+      objectReference: {fileID: 0}
+    - target: {fileID: 4022554078425101177, guid: d2ed1727ff6100c43ba0e5a6919ef8d8, type: 3}
+      propertyPath: m_AnimationTriggers.m_SelectedTrigger
+      value: Selected
       objectReference: {fileID: 0}
     - target: {fileID: 4022554078425101177, guid: d2ed1727ff6100c43ba0e5a6919ef8d8, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
@@ -859,6 +857,22 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5768864047638599595, guid: d2ed1727ff6100c43ba0e5a6919ef8d8, type: 3}
+      propertyPath: m_Transition
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5768864047638599595, guid: d2ed1727ff6100c43ba0e5a6919ef8d8, type: 3}
+      propertyPath: m_Navigation.m_Mode
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5768864047638599595, guid: d2ed1727ff6100c43ba0e5a6919ef8d8, type: 3}
+      propertyPath: m_AnimationTriggers.m_PressedTrigger
+      value: Pressed
+      objectReference: {fileID: 0}
+    - target: {fileID: 5768864047638599595, guid: d2ed1727ff6100c43ba0e5a6919ef8d8, type: 3}
+      propertyPath: m_AnimationTriggers.m_SelectedTrigger
+      value: Selected
+      objectReference: {fileID: 0}
+    - target: {fileID: 5768864047638599595, guid: d2ed1727ff6100c43ba0e5a6919ef8d8, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -896,7 +910,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5948067907294040529, guid: d2ed1727ff6100c43ba0e5a6919ef8d8, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5948067907294040529, guid: d2ed1727ff6100c43ba0e5a6919ef8d8, type: 3}
+      propertyPath: m_TagString
+      value: Shop
       objectReference: {fileID: 0}
     - target: {fileID: 8289750262145691706, guid: d2ed1727ff6100c43ba0e5a6919ef8d8, type: 3}
       propertyPath: m_Pivot.x
@@ -1024,6 +1042,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5948067907294040529, guid: d2ed1727ff6100c43ba0e5a6919ef8d8, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1438324900}
+    - targetCorrespondingSourceObject: {fileID: 5948067907294040529, guid: d2ed1727ff6100c43ba0e5a6919ef8d8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1438324904}
     - targetCorrespondingSourceObject: {fileID: 1751833455910722999, guid: d2ed1727ff6100c43ba0e5a6919ef8d8, type: 3}
       insertIndex: -1
       addedObject: {fileID: 700880041}
@@ -1230,6 +1251,7 @@ GameObject:
   - component: {fileID: 711679027}
   - component: {fileID: 711679029}
   - component: {fileID: 711679028}
+  - component: {fileID: 711679030}
   m_Layer: 5
   m_Name: CoinCounter
   m_TagString: Untagged
@@ -1254,7 +1276,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 369, y: -222}
+  m_AnchoredPosition: {x: 343, y: -222}
   m_SizeDelta: {x: -906.7919, y: -473.25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &711679028
@@ -1295,6 +1317,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 711679026}
   m_CullTransparentMesh: 1
+--- !u!114 &711679030
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 711679026}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 395f8811bc13875429b3e703190bafdf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coinText: {fileID: 1459838554}
 --- !u!224 &744732433 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5960760484123967841, guid: 59ccff7a593dcf646b5a277f120870a7, type: 3}
@@ -1795,6 +1830,19 @@ MonoBehaviour:
   thrusterSpeedIncrease: 50
   rotationSpeedIncrease: 20
   laserCooldownDecrease: 0.15
+--- !u!114 &1438324904
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 700880038}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 249b2e9dddcdc574e8733d9a28bcb933, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shopPanel: {fileID: 700880039}
 --- !u!1 &1459838552
 GameObject:
   m_ObjectHideFlags: 0

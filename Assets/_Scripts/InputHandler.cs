@@ -1,12 +1,18 @@
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class InputHandler : SingletonMonoBehavior<InputHandler>
 {
-    public UnityEvent<Vector3> OnMove;
+    public static event Action OnShopToggleRequested;
 
     private void Update()
     {
-        //invoke movement here
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            Debug.Log("B pressed");
+            // Fire the event instead of directly calling ToggleShop
+            OnShopToggleRequested?.Invoke();
+        }
     }
 }
