@@ -50,6 +50,6 @@ MonoBehaviour:
   spawnDistance: 10
   minSpeed: 2
   maxSpeed: 5
-  initialWaveCount: 6
+  initialWaveCount: 4
   spawnDuration: 15
-  waveIncrement: 2
+  waveIncrement: 1
