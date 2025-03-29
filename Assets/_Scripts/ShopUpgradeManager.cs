@@ -19,8 +19,8 @@ public class ShopUpgradeManager : MonoBehaviour
     [SerializeField] private int upgradeCost = 5;
 
     // Amount by which each upgrade affects the player's attributes.
-    [SerializeField] private float thrusterSpeedIncrease = 30.0f;    // Increase in movement speed per upgrade
-    [SerializeField] private float rotationSpeedIncrease = 10.0f;    // Increase in rotation speed per upgrade
+    [SerializeField] private float thrusterSpeedIncrease = 100.0f;    // Increase in movement speed per upgrade
+    [SerializeField] private float rotationSpeedIncrease = 30.0f;    // Increase in movement speed per upgrade
     [SerializeField] private float laserCooldownDecrease = 0.5f;      // Decrease in laser cooldown per upgrade
 
     // Variables to help prevent duplicate clicks
