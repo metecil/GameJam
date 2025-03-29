@@ -99,7 +99,8 @@ public class LaserController : MonoBehaviour
     {
         int scoreMultiplier = Math.Max(1, GameManager.Instance.GetCurrentStreak()); 
         GameManager.Instance.AddScore(scoreMultiplier * score);
-        GameManager.Instance.IncrementStreak();
         GameManager.Instance.SetLastDestroyTime(Time.time);
+        GameManager.Instance.IncrementStreak();
+
     }
 }
