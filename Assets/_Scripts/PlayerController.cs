@@ -179,6 +179,7 @@ public class PlayerController : MonoBehaviour
                 {
                     Instantiate(coinPrefab, collision.transform.position, Quaternion.identity);
                 }
+                HandleDestruction(1);
                 Destroy(collision.gameObject);
                 rigidBody.linearVelocity = lastNonCollisionVelocity;
                 return;
@@ -188,6 +189,15 @@ public class PlayerController : MonoBehaviour
                 StartCoroutine(HandleDeath());
             }
         }
+    }
+
+    private void HandleDestruction(int score)
+    {
+        int scoreMultiplier = System.Math.Max(1, GameManager.Instance.GetCurrentStreak());
+        GameManager.Instance.AddScore(scoreMultiplier * score);
+        GameManager.Instance.SetLastDestroyTime(Time.time);
+        GameManager.Instance.IncrementStreak();
+
     }
 
     private IEnumerator HandleDeath()
