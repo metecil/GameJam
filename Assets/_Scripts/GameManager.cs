@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
+using UnityEngine.Rendering;
 
 
 
@@ -14,6 +15,10 @@ public class GameManager : SingletonMonoBehavior<GameManager>
     private int lives = 3;
     private int score = 0;
     private int coins = 0;
+    private float lastDestroyTime = -10f;
+    private int currentStreak = 0;
+
+    [SerializeField] private float streakDuration = 2f;
 
     public event Action<int> OnScoreUpdated;
     public event Action<int> OnLivesUpdated;
@@ -70,6 +75,11 @@ public class GameManager : SingletonMonoBehavior<GameManager>
             // Fire the event instead of directly calling ToggleShop
             OnShopToggleRequested?.Invoke();
         }
+
+        if (Time.time - lastDestroyTime > streakDuration)
+        {
+            currentStreak = 0; 
+        }
     }
     private void OnDestroy()
     {
@@ -124,6 +134,12 @@ public class GameManager : SingletonMonoBehavior<GameManager>
             Debug.Log("Gravity deactivated!");
         }
     }
+
+    public int GetCurrentStreak() => currentStreak;
+
+    public float GetLastDestroy() => lastDestroyTime;
+
+    public void IncrementStreak() => currentStreak++;
 
     public int GetScore() => score;
     public int GetLives() => lives;

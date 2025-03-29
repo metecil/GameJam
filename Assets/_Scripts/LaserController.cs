@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using System;
 public class LaserController : MonoBehaviour
 {
     [SerializeField] private float speed;
@@ -40,17 +40,18 @@ public class LaserController : MonoBehaviour
             return;
 
         bool handled = false;
+        int scoreMultiplier = Math.Max(1, GameManager.Instance.GetCurrentStreak()); 
 
         // Normal asteroids (use tags "Asteroid1" and "Asteroid2")
         if (other.gameObject.CompareTag("Asteroid1") || other.gameObject.CompareTag("Asteroid2"))
         {
             if (other.gameObject.CompareTag("Asteroid2"))
             {
-                GameManager.instance.AddScore(1);
+                GameManager.instance.AddScore(scoreMultiplier * 1);
             }
             else if (other.gameObject.CompareTag("Asteroid1"))
             {
-                GameManager.instance.AddScore(2);
+                GameManager.instance.AddScore(scoreMultiplier * 2);
             }
             if (coinPrefab != null)
             {
@@ -70,11 +71,11 @@ public class LaserController : MonoBehaviour
             
             if (other.gameObject.CompareTag("Asteroid2Big"))
             {
-                GameManager.instance.AddScore(1);
+                GameManager.instance.AddScore(scoreMultiplier * 1);
             }
             else if (other.gameObject.CompareTag("Asteroid1Big"))
             {
-                GameManager.instance.AddScore(2);
+                GameManager.instance.AddScore(scoreMultiplier * 2);
             }
             if (coinPrefab != null)
             {
