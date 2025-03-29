@@ -12,6 +12,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float cooldown = 1f;
     [SerializeField] private AudioClip fireAudioClip; // Laser fire sound effect
 
+    // Optional: Coin prefab to spawn when an asteroid is destroyed while invincible.
+    [SerializeField] private GameObject coinPrefab;
+
     // Thruster logic fields:
     [SerializeField] private GameObject thrusterDisplay;
     [SerializeField] private Sprite[] thrusterSprites; 
@@ -23,7 +26,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private AudioClip deathAudioClip; // Ship's dying sound
     [SerializeField] private float respawnDelay = 3f;    // Duration of invulnerability & fade effect
     [SerializeField] private int beamCycles = 3;         // Number of beaming (fade in/out) cycles during respawn
-
+    [SerializeField] private PowerUpPanelUI powerUpPanelUI;
     private Rigidbody rigidBody;
     private int currentCannon = 0;
     private float time = 0f;
@@ -31,11 +34,38 @@ public class PlayerController : MonoBehaviour
     private Camera mainCamera;
     private bool isInvulnerable = false;
 
+    // --- POWER-UP FIELDS ---
+    // Laser Spray Power-Up.
+    private bool laserSprayUnlocked = false;
+    public bool HasLaserSprayPowerUp { get { return laserSprayUnlocked; } }
+
+    // Invincibility Power-Up.
+    [SerializeField] private Sprite normalSprite;
+    [SerializeField] private Sprite invincibleSprite;
+
+    private bool invincibilityUnlocked = false;
+    public bool HasInvincibilityPowerUp { get { return invincibilityUnlocked; } }
+
+    // Convenience property to check if any power-up is saved.
+    public bool HasAnyPowerUp { get { return laserSprayUnlocked || invincibilityUnlocked; } }
+
+    // Flags for the invincibility effect.
+    private bool isInvincibleActive = false;
+
+    // For boosting speed and rotation during invincibility.
+    private float originalMovementSpeed;
+    private float originalRotationSpeed;
+
+    // To prevent push-back when invincible, we store the last known velocity.
+    private Vector3 lastNonCollisionVelocity;
+
     private void Start()
     {
         mainCamera = Camera.main;
         colliders = GetComponents<Collider>();
         rigidBody = GetComponent<Rigidbody>();
+        originalMovementSpeed = movementSpeed;
+        originalRotationSpeed = rotationSpeed;
     }
 
     private void Update()
@@ -44,7 +74,6 @@ public class PlayerController : MonoBehaviour
         thrusterDisplay.transform.position = transform.TransformPoint(thrusterLocalOffset);
         thrusterDisplay.transform.rotation = transform.rotation;
 
-        // Note: Input is processed even if the ship is invulnerable.
         // Laser firing logic.
         if (time > 0f)
             time -= Time.deltaTime;
@@ -89,10 +118,28 @@ public class PlayerController : MonoBehaviour
         // Clamp velocity.
         if (rigidBody.linearVelocity.magnitude > maxSpeed)
             rigidBody.linearVelocity = rigidBody.linearVelocity.normalized * maxSpeed;
+        
+        // Use F key to trigger the saved power-up (if any).
+        if (Input.GetKeyDown(KeyCode.F) && HasAnyPowerUp)
+        {
+            if (laserSprayUnlocked)
+            {
+                ActivateLaserSpray();
+                laserSprayUnlocked = false;
+            }
+            else if (invincibilityUnlocked)
+            {
+                StartCoroutine(InvincibilityCoroutine());
+                invincibilityUnlocked = false;
+            }
+        }
     }
 
     private void FixedUpdate()
     {
+        // Store the current velocity.
+        lastNonCollisionVelocity = rigidBody.linearVelocity;
+
         // Gravity logic (unchanged).
         if (GameManager.instance.gravityActive)
         {
@@ -117,9 +164,29 @@ public class PlayerController : MonoBehaviour
     // Dying mechanics: on collision with an asteroid.
     private void OnCollisionEnter(Collision collision)
     {
-        if (!isInvulnerable && collision.gameObject.tag.StartsWith("Asteroid"))
+        if (collision.gameObject.tag.StartsWith("Asteroid"))
         {
-            StartCoroutine(HandleDeath());
+            if (isInvincibleActive)
+            {
+                // When invincible, trigger the asteroid's explosion and coin drop if possible,
+                // then destroy the asteroid and reset the ship's velocity.
+                AsteroidController asteroidCtrl = collision.gameObject.GetComponent<AsteroidController>();
+                if (asteroidCtrl != null)
+                {
+                    asteroidCtrl.TriggerExplosion();
+                }
+                if (coinPrefab != null)
+                {
+                    Instantiate(coinPrefab, collision.transform.position, Quaternion.identity);
+                }
+                Destroy(collision.gameObject);
+                rigidBody.linearVelocity = lastNonCollisionVelocity;
+                return;
+            }
+            if (!isInvulnerable)
+            {
+                StartCoroutine(HandleDeath());
+            }
         }
     }
 
@@ -127,23 +194,18 @@ public class PlayerController : MonoBehaviour
     {
         isInvulnerable = true;
 
-        // Play death sound.
         if (deathAudioClip != null)
             AudioSource.PlayClipAtPoint(deathAudioClip, transform.position);
 
-        // Disable colliders to prevent further collisions.
         foreach (Collider col in colliders)
             col.enabled = false;
 
-        // Reposition ship to the center of the screen.
         Vector3 center = mainCamera.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, mainCamera.nearClipPlane));
         center.z = 0f;
         transform.position = center;
 
-        // Clear any residual velocity.
         rigidBody.linearVelocity = Vector3.zero;
 
-        // Beaming effect: ship fades out and in multiple times.
         SpriteRenderer sr = GetComponent<SpriteRenderer>();
         if (sr != null)
         {
@@ -152,7 +214,6 @@ public class PlayerController : MonoBehaviour
 
             for (int i = 0; i < beamCycles; i++)
             {
-                // Fade out.
                 for (float t = 0; t < halfCycle; t += Time.deltaTime)
                 {
                     float alpha = Mathf.Lerp(1, 0, t / halfCycle);
@@ -161,7 +222,6 @@ public class PlayerController : MonoBehaviour
                 }
                 sr.color = new Color(sr.color.r, sr.color.g, sr.color.b, 0);
 
-                // Fade in.
                 for (float t = 0; t < halfCycle; t += Time.deltaTime)
                 {
                     float alpha = Mathf.Lerp(0, 1, t / halfCycle);
@@ -176,7 +236,6 @@ public class PlayerController : MonoBehaviour
             yield return new WaitForSeconds(respawnDelay);
         }
 
-        // Re-enable colliders.
         foreach (Collider col in colliders)
             col.enabled = true;
 
@@ -195,4 +254,84 @@ public class PlayerController : MonoBehaviour
     {
         cooldown = Mathf.Max(0.1f, cooldown - amount);
     }
+
+    public void ActivateLaserSpray(float duration = 5f, float sprayInterval = 0.5f)
+    {
+        StartCoroutine(LaserSprayCoroutine(duration, sprayInterval));
+    }
+
+    private IEnumerator LaserSprayCoroutine(float duration, float interval)
+    {
+        float elapsed = 0f;
+        powerUpPanelUI.HidePowerUpPanel();
+        while (elapsed < duration)
+        {
+            for (int angle = 0; angle < 360; angle += 45)
+            {
+                Quaternion rotation = Quaternion.Euler(0, 0, angle);
+                Instantiate(laser, transform.position, rotation);
+            }
+            yield return new WaitForSeconds(interval);
+            elapsed += interval;
+        }
+    }
+
+    public void UnlockLaserSpray()
+    {
+        // Only unlock if no other power-up is already saved.
+        if (!HasAnyPowerUp)
+            laserSprayUnlocked = true;
+        else
+            Debug.Log("Another power-up is already saved.");
+    }
+
+    public void UnlockInvincibility()
+    {
+        // Only unlock if no other power-up is already saved.
+        if (!HasAnyPowerUp)
+            invincibilityUnlocked = true;
+        else
+            Debug.Log("Another power-up is already saved.");
+    }
+
+    private IEnumerator InvincibilityCoroutine(float duration = 15f, float flashInterval = 0.2f)
+    {
+        powerUpPanelUI.HidePowerUpPanel();
+        // Set both invincibility flags.
+        isInvincibleActive = true;
+        isInvulnerable = true;
+
+        // Boost the player's speed and rotation.
+        float boostFactor = 1.5f;
+        float tempMovementSpeed = movementSpeed;
+        float tempRotationSpeed = rotationSpeed;
+        movementSpeed *= boostFactor;
+        rotationSpeed *= boostFactor;
+
+        SpriteRenderer sr = GetComponent<SpriteRenderer>();
+        float elapsed = 0f;
+        bool toggle = false;
+        while (elapsed < duration)
+        {
+            sr.sprite = toggle ? invincibleSprite : normalSprite;
+            toggle = !toggle;
+            yield return new WaitForSeconds(flashInterval);
+            elapsed += flashInterval;
+        }
+        sr.sprite = normalSprite;
+
+        // Restore the player's speed and rotation.
+        movementSpeed = tempMovementSpeed;
+        rotationSpeed = tempRotationSpeed;
+
+        // Reset invincibility flags.
+        isInvincibleActive = false;
+        isInvulnerable = false;
+        yield break;
+    }
+    public bool IsInvincibleActive
+    {
+        get { return isInvincibleActive; }
+    }
+
 }

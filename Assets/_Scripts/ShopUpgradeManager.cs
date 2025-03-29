@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class ShopUpgradeManager : MonoBehaviour
 {
@@ -9,23 +10,32 @@ public class ShopUpgradeManager : MonoBehaviour
     [Header("UI Sliders for Visual Upgrades")]
     [SerializeField] private Slider thrustersSlider;  // Visual indicator for thrusters upgrades
     [SerializeField] private Slider lasersSlider;     // Visual indicator for lasers upgrades
+    [SerializeField] private float lastInvincibilityTime;
 
     [Header("Upgrade Settings")]
     public int maxUpgradeLevel = 3;
     private int currentThrusterUpgrade = 0;
     private int currentLaserUpgrade = 0;
+    private int invincibilityCost = 25;
+    [SerializeField] private PowerUpPanelUI powerUpPanelUI;
+
 
     // Each upgrade costs 5 coins.
     [SerializeField] private int upgradeCost = 5;
 
+    // Cost for the Laser Spray Power-Up.
+    [SerializeField] private int laserSprayCost = 15;
+
     // Amount by which each upgrade affects the player's attributes.
     [SerializeField] private float thrusterSpeedIncrease = 100.0f;    // Increase in movement speed per upgrade
-    [SerializeField] private float rotationSpeedIncrease = 30.0f;    // Increase in movement speed per upgrade
+    [SerializeField] private float rotationSpeedIncrease = 30.0f;     // Increase in rotation speed per upgrade
     [SerializeField] private float laserCooldownDecrease = 0.5f;      // Decrease in laser cooldown per upgrade
 
-    // Variables to help prevent duplicate clicks
+    // Variables to help prevent duplicate clicks.
     private float lastThrusterUpgradeTime = -Mathf.Infinity;
     private float lastLaserUpgradeTime = -Mathf.Infinity;
+    private float lastLaserSprayTime = -Mathf.Infinity;
+
     // Time window (in unscaled seconds) within which additional clicks are ignored.
     private const float upgradeCooldown = 0.2f;
 
@@ -59,7 +69,7 @@ public class ShopUpgradeManager : MonoBehaviour
         {
             // Subtract exactly 5 coins.
             GameManager.instance.AddCoins(-upgradeCost);
-            
+
             currentThrusterUpgrade++;
             // Increase player's movement and rotation speed.
             player.IncreaseMovementSpeed(thrusterSpeedIncrease, rotationSpeedIncrease);
@@ -70,11 +80,11 @@ public class ShopUpgradeManager : MonoBehaviour
                 thrustersSlider.value = currentThrusterUpgrade;
             }
         }
-        
+
         // Immediately clear the current selection to reset button state.
-        if (UnityEngine.EventSystems.EventSystem.current != null)
+        if (EventSystem.current != null)
         {
-            UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(null);
+            EventSystem.current.SetSelectedGameObject(null);
         }
     }
 
@@ -91,7 +101,6 @@ public class ShopUpgradeManager : MonoBehaviour
         {
             // Subtract exactly 5 coins.
             GameManager.instance.AddCoins(-upgradeCost);
-            
             currentLaserUpgrade++;
             // Decrease the laser cooldown to increase firing rate.
             player.DecreaseLaserCooldown(laserCooldownDecrease);
@@ -102,11 +111,69 @@ public class ShopUpgradeManager : MonoBehaviour
                 lasersSlider.value = currentLaserUpgrade;
             }
         }
-        
+
         // Immediately clear the current selection to reset button state.
-        if (UnityEngine.EventSystems.EventSystem.current != null)
+        if (EventSystem.current != null)
         {
-            UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(null);
+            EventSystem.current.SetSelectedGameObject(null);
         }
+    }
+
+    // Called from the Laser Spray Power-Up button OnClick event.
+    // This method unlocks the power-up for later use via the F key.
+    public void ActivateLaserSprayPowerUp()
+    {
+        // Prevent multiple triggers within a short time window.
+        if (Time.unscaledTime - lastLaserSprayTime < upgradeCooldown)
+            return;
+        lastLaserSprayTime = Time.unscaledTime;
+
+        // Check if the player already has the Laser Spray power-up.
+        if (player.HasLaserSprayPowerUp)
+        {
+            Debug.Log("Laser Spray Power-Up is already unlocked.");
+        }
+        else if (GameManager.instance.GetCoins() >= laserSprayCost)
+        {
+            // Deduct the coins and unlock the power-up.
+            GameManager.instance.AddCoins(-laserSprayCost);
+            player.UnlockLaserSpray();
+            powerUpPanelUI.ShowPowerUp(PowerUpPanelUI.PowerUpType.LaserSpray);
+        }
+        else
+        {
+            Debug.Log("Not enough coins for Laser Spray Power-Up!");
+        }
+
+        // Immediately clear the current selection to reset button state.
+        if (EventSystem.current != null)
+        {
+            EventSystem.current.SetSelectedGameObject(null);
+        }
+    }
+    // Called from the Invincibility Power-Up button OnClick event.
+    public void ActivateInvincibilityPowerUp()
+    {
+        if (Time.unscaledTime - lastInvincibilityTime < upgradeCooldown)
+            return;
+        lastInvincibilityTime = Time.unscaledTime;
+
+        if (player.HasInvincibilityPowerUp)
+        {
+            Debug.Log("Invincibility Power-Up is already unlocked.");
+        }
+        else if (GameManager.instance.GetCoins() >= invincibilityCost)
+        {
+            GameManager.instance.AddCoins(-invincibilityCost);
+            player.UnlockInvincibility();
+            powerUpPanelUI.ShowPowerUp(PowerUpPanelUI.PowerUpType.Invincible);
+        }
+        else
+        {
+            Debug.Log("Not enough coins for Invincibility Power-Up!");
+        }
+
+        if (UnityEngine.EventSystems.EventSystem.current != null)
+            UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(null);
     }
 }

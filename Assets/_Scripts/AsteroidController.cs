@@ -5,6 +5,7 @@ public class AsteroidController : MonoBehaviour
     [SerializeField] private GameObject explosionPrefab;   // Explosion effect prefab
     [SerializeField] private AudioClip explosionSound;       // Explosion sound effect
     [SerializeField] private float explosionLifetime = 2f;     // Time before explosion is destroyed
+    [SerializeField] private GameObject coinPrefab;          // Coin prefab to drop when destroyed
 
     // Fields for splitting big asteroids:
     [SerializeField] private GameObject asteroid1Prefab;       // For splitting Asteroid1Big
@@ -135,9 +136,24 @@ public class AsteroidController : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             Debug.Log("Asteroid collided with Player via OnCollisionEnter.");
-            GameManager.instance.RemoveLife();
-            TriggerExplosion();
-            Destroy(gameObject);
+            // Get the player's invincibility status.
+            PlayerController player = collision.gameObject.GetComponent<PlayerController>();
+            if (player != null && player.IsInvincibleActive)
+            {
+                Debug.Log("Player is invincible. Not removing a life.");
+                TriggerExplosion();
+                if (coinPrefab != null)
+                {
+                    Instantiate(coinPrefab, transform.position, Quaternion.identity);
+                }
+                Destroy(gameObject);
+            }
+            else
+            {
+                GameManager.instance.RemoveLife();
+                TriggerExplosion();
+                Destroy(gameObject);
+            }
         }
     }
 
