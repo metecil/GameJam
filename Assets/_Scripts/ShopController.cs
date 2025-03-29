@@ -45,8 +45,14 @@ public class ShopUIController : MonoBehaviour
                 return;
             }
             
-            // Pause the game and show the shop panel.
+            // Check if the game is already paused. If so, set a default time scale.
             previousTimeScale = Time.timeScale;
+            if(previousTimeScale == 0f)
+            {
+                previousTimeScale = 1f; // or whatever your normal game time scale should be
+            }
+            
+            // Pause the game and show the shop panel.
             Time.timeScale = 0f;
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;

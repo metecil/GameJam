@@ -385,6 +385,11 @@ MonoBehaviour:
   - {fileID: 1010215436, guid: 608197c57d9bf46768ad530348c74350, type: 3}
   thrusterAccelerationTime: 1
   thrusterLocalOffset: {x: 0, y: -0.5, z: 0}
+  deathAudioClip: {fileID: 0}
+  respawnDelay: 3
+  beamCycles: 3
+  normalSprite: {fileID: 1820347008, guid: 52e1f20971d1849e9899aa798c893c5c, type: 3}
+  invincibleSprite: {fileID: 0}
 --- !u!114 &6991793249563274996
 MonoBehaviour:
   m_ObjectHideFlags: 0
