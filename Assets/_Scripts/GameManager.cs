@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
 
+
+
 public class GameManager : SingletonMonoBehavior<GameManager>
 {
     public static GameManager instance;
@@ -11,9 +13,13 @@ public class GameManager : SingletonMonoBehavior<GameManager>
     private int bestScore = 0; 
     private int lives = 3;
     private int score = 0;
+    private int coins = 0;
 
     public event Action<int> OnScoreUpdated;
     public event Action<int> OnLivesUpdated;
+    public event Action<int> OnCoinsUpdated;
+    public event Action OnShopToggleRequested;
+
 
     // --- Gravity Switch Variables ---
     public bool gravityActive = false;
@@ -56,6 +62,15 @@ public class GameManager : SingletonMonoBehavior<GameManager>
         }
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            Debug.Log("B pressed");
+            // Fire the event instead of directly calling ToggleShop
+            OnShopToggleRequested?.Invoke();
+        }
+    }
     private void OnDestroy()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
@@ -67,23 +82,9 @@ public class GameManager : SingletonMonoBehavior<GameManager>
         {
             score = 0;
             lives = 3;
+            coins = 0;
             OnScoreUpdated?.Invoke(score);
             OnLivesUpdated?.Invoke(lives);
-            
-            // If this is the Level scene, reassign the coinText reference.
-            if (scene.name == "Level")
-            {
-                GameObject coinTextObject = GameObject.Find("CoinText");
-                if (coinTextObject != null)
-                {
-                    coinText = coinTextObject.GetComponent<TextMeshProUGUI>();
-                    UpdateCoinUI();
-                }
-                else
-                {
-                    Debug.LogWarning("CoinText object not found. Check that your UI element is named 'CoinText'.");
-                }
-            }
             
             // Start gravity switch routine when the level loads.
             StartCoroutine(GravitySwitchRoutine());
@@ -152,25 +153,15 @@ public class GameManager : SingletonMonoBehavior<GameManager>
     {
         this.bestScore = score;
     }
-
-    private int coins = 0;
-    public TextMeshProUGUI coinText;
     public int GetCoins() => coins;
     public void AddCoins(int amount)
     {
         coins += amount;
-        UpdateCoinUI();
-    }
-    private void UpdateCoinUI()
-    {
-        if (coinText != null)
-        {
-            coinText.text = "x" + coins;
-        }
+        OnCoinsUpdated?.Invoke(coins);
     }
     public void ResetCoins()
     {
         coins = 0;
-        UpdateCoinUI();
+        OnCoinsUpdated?.Invoke(coins);
     }
 }
