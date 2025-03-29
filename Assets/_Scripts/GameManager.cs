@@ -20,7 +20,7 @@ public class GameManager : SingletonMonoBehavior<GameManager>
     public event Action<int> OnLivesUpdated;
     public event Action<int> OnCoinsUpdated;
     public event Action OnShopToggleRequested;
-    public event Action<int> OnCurrentStreakUpdated;
+    public event Action<int, float> OnCurrentStreakUpdated;
 
 
     // --- Gravity Switch Variables ---
@@ -34,7 +34,7 @@ public class GameManager : SingletonMonoBehavior<GameManager>
     // --- Score multiplier variables ---
     private float lastDestroyTime = -10f;
     private int currentStreak = 0;
-    [SerializeField] private float streakDuration = 2f;
+    [SerializeField] private float streakDuration = 4f;
     private int maxStreak = 5;
 
     // --- Background Music ---
@@ -83,8 +83,8 @@ public class GameManager : SingletonMonoBehavior<GameManager>
         if (Time.time - lastDestroyTime > streakDuration)
         {
             currentStreak = 0;
-            OnCurrentStreakUpdated?.Invoke(currentStreak);
         }
+        OnCurrentStreakUpdated?.Invoke(currentStreak, Time.time - lastDestroyTime);
 
     }
     private void OnDestroy()
@@ -103,7 +103,7 @@ public class GameManager : SingletonMonoBehavior<GameManager>
             lastDestroyTime = -10f;
             OnScoreUpdated?.Invoke(score);
             OnLivesUpdated?.Invoke(lives);
-            OnCurrentStreakUpdated?.Invoke(currentStreak);
+            OnCurrentStreakUpdated?.Invoke(currentStreak, Time.time - lastDestroyTime);
             
             // Start gravity switch routine when the level loads.
             StartCoroutine(GravitySwitchRoutine());
@@ -152,8 +152,9 @@ public class GameManager : SingletonMonoBehavior<GameManager>
     public void IncrementStreak()
     {
         currentStreak = Math.Min(currentStreak + 1, maxStreak); // Cap streak at maxStreak
-        OnCurrentStreakUpdated?.Invoke(currentStreak);
+        OnCurrentStreakUpdated?.Invoke(currentStreak, Time.time - lastDestroyTime);
     }
+    public float GetStreakDuration() => streakDuration;
     public int GetScore() => score;
     public int GetLives() => lives;
     public int GetBestScore() => bestScore;
