@@ -23,12 +23,37 @@ public class GameManager : SingletonMonoBehavior<GameManager>
     [SerializeField] private TextMeshProUGUI countdownText; // Reference to a TextMeshProUGUI element for countdown
     [SerializeField] private int countdownStart = 5;          // Countdown starting number
 
+    // --- Background Music ---
+    [SerializeField] private AudioClip backgroundMusic;       // Background music clip
+    private AudioSource audioSource;                          // AudioSource for background music
+
+    // --- Game Over Sound ---
+    [SerializeField] private AudioClip gameOverSound;         // Sound to play when game is over
+
     protected override void Awake()
     {
-        if (instance == null) { instance = this; }
+        if (instance == null)
+        {
+            instance = this;
+        }
         base.Awake();
         DontDestroyOnLoad(gameObject);
         SceneManager.sceneLoaded += OnSceneLoaded;
+
+        // Set up the AudioSource for background music.
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
+        if (backgroundMusic != null)
+        {
+            audioSource.clip = backgroundMusic;
+            audioSource.loop = true;
+            audioSource.playOnAwake = false;
+            audioSource.volume = 0.5f; // Adjust volume as needed.
+            audioSource.Play();
+        }
     }
 
     private void OnDestroy()
@@ -81,7 +106,7 @@ public class GameManager : SingletonMonoBehavior<GameManager>
                     countdownText.text = i.ToString();
                     yield return new WaitForSeconds(1f);
                 }
-                // Optionally, display "GO!" or clear the text.
+                // Optionally, display "Gravity Switch!!" briefly.
                 countdownText.text = "Gravity Switch!!";
                 yield return new WaitForSeconds(0.5f);
                 countdownText.text = "";
@@ -111,6 +136,17 @@ public class GameManager : SingletonMonoBehavior<GameManager>
     {
         lives--;
         OnLivesUpdated?.Invoke(lives);
+
+        if (lives <= 0)
+        {
+            Debug.Log("Game Over!");
+            if (gameOverSound != null)
+            {
+                // Play game over sound at the camera's position.
+                AudioSource.PlayClipAtPoint(gameOverSound, Camera.main.transform.position);
+            }
+            // Optional: trigger additional game over logic (e.g., load Game Over scene).
+        }
     }
     public void SetBestScore(int score)
     {
