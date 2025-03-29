@@ -3839,11 +3839,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6242219108457717517, guid: d361ad23772178847aab9763219a283e, type: 3}
       propertyPath: m_text
-      value: 1000
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6242219108457717517, guid: d361ad23772178847aab9763219a283e, type: 3}
       propertyPath: m_fontSize
-      value: 17.8
+      value: 36
       objectReference: {fileID: 0}
     - target: {fileID: 6242219108457717517, guid: d361ad23772178847aab9763219a283e, type: 3}
       propertyPath: m_fontSizeMax
