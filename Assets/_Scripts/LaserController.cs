@@ -31,6 +31,7 @@ public class LaserController : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
     }
 
     private void OnTriggerEnter(Collider other)
@@ -40,18 +41,18 @@ public class LaserController : MonoBehaviour
             return;
 
         bool handled = false;
-        int scoreMultiplier = Math.Max(1, GameManager.Instance.GetCurrentStreak()); 
+         
 
         // Normal asteroids (use tags "Asteroid1" and "Asteroid2")
         if (other.gameObject.CompareTag("Asteroid1") || other.gameObject.CompareTag("Asteroid2"))
         {
             if (other.gameObject.CompareTag("Asteroid2"))
             {
-                GameManager.instance.AddScore(scoreMultiplier * 1);
+                HandleDestruction(1);
             }
             else if (other.gameObject.CompareTag("Asteroid1"))
             {
-                GameManager.instance.AddScore(scoreMultiplier * 2);
+                HandleDestruction(2);
             }
             if (coinPrefab != null)
             {
@@ -71,11 +72,11 @@ public class LaserController : MonoBehaviour
             
             if (other.gameObject.CompareTag("Asteroid2Big"))
             {
-                GameManager.instance.AddScore(scoreMultiplier * 1);
+                HandleDestruction(2);
             }
             else if (other.gameObject.CompareTag("Asteroid1Big"))
             {
-                GameManager.instance.AddScore(scoreMultiplier * 2);
+                HandleDestruction(2);
             }
             if (coinPrefab != null)
             {
@@ -91,5 +92,14 @@ public class LaserController : MonoBehaviour
         }
         // Always destroy the laser after collision.
         Destroy(gameObject);
+    }
+
+    // Handle all calls to the game manager related to scoring. 
+    private void HandleDestruction(int score)
+    {
+        int scoreMultiplier = Math.Max(1, GameManager.Instance.GetCurrentStreak()); 
+        GameManager.Instance.AddScore(scoreMultiplier * score);
+        GameManager.Instance.IncrementStreak();
+        GameManager.Instance.SetLastDestroyTime(Time.time);
     }
 }
