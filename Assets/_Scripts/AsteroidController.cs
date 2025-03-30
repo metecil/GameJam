@@ -76,7 +76,7 @@ public class AsteroidController : MonoBehaviour
                 if (distanceToPlayer < 0.1f)
                     distanceToPlayer = 0.1f;
                 float forceMagPlayer = GameManager.instance.gravityConstant * (myMass * 1f) / (distanceToPlayer * distanceToPlayer);
-                float spaceshipGravityMultiplier = 20f;
+                float spaceshipGravityMultiplier = 100f;
                 rb.AddForce(directionToPlayer.normalized * forceMagPlayer * spaceshipGravityMultiplier);
             }
 
@@ -95,7 +95,7 @@ public class AsteroidController : MonoBehaviour
                 float otherMass = (other.gameObject.CompareTag("Asteroid1Big") || other.gameObject.CompareTag("Asteroid2Big")) ? 2f : 1f;
                 float myMass = (gameObject.CompareTag("Asteroid1Big") || gameObject.CompareTag("Asteroid2Big")) ? 2f : 1f;
                 float forceMagAsteroid = GameManager.instance.gravityConstant * (myMass * otherMass) / (distance * distance);
-                float asteroidGravityMultiplier = 5f;
+                float asteroidGravityMultiplier = 50f;
                 rb.AddForce(direction.normalized * forceMagAsteroid * asteroidGravityMultiplier);
             }
         }
