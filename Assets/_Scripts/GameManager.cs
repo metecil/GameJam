@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
+using UnityEngine.Rendering;
 
 
 
@@ -19,6 +20,7 @@ public class GameManager : SingletonMonoBehavior<GameManager>
     public event Action<int> OnLivesUpdated;
     public event Action<int> OnCoinsUpdated;
     public event Action OnShopToggleRequested;
+    public event Action<int, float> OnCurrentStreakUpdated;
 
 
     // --- Gravity Switch Variables ---
@@ -28,6 +30,12 @@ public class GameManager : SingletonMonoBehavior<GameManager>
     // --- Countdown Variables ---
     [SerializeField] private TextMeshProUGUI countdownText; // Reference to a TextMeshProUGUI element for countdown
     [SerializeField] private int countdownStart = 5;          // Countdown starting number
+
+    // --- Score multiplier variables ---
+    private float lastDestroyTime = -10f; // Time last asteroid was destroyed at. 
+    private int currentStreak = 0;  // Current streak the player is on. 
+    [SerializeField] private float streakDuration = 3f; // Duration a streak lasts. 
+    private int maxStreak = 5; // Max streak a player can achieve (streak is equivalent to score mutliplier so we don't want this getting to high. 
 
     // --- Background Music ---
     [SerializeField] private AudioClip backgroundMusic;       // Background music clip
@@ -70,6 +78,21 @@ public class GameManager : SingletonMonoBehavior<GameManager>
             // Fire the event instead of directly calling ToggleShop
             OnShopToggleRequested?.Invoke();
         }
+
+        // Reset current streak to 0 if the player has not destroyed an asteroid in the last streakDuration amount of time. 
+        float timeElapsed = Time.time - lastDestroyTime;
+
+        if (currentStreak > 0 && timeElapsed > streakDuration)
+        {
+            currentStreak = 0;
+            OnCurrentStreakUpdated?.Invoke(currentStreak, 0f); 
+        }
+        // Only need to pass time when the streak is active. 
+        else if (currentStreak >= 2)
+        {
+            OnCurrentStreakUpdated?.Invoke(currentStreak, streakDuration - timeElapsed);
+        }
+   
     }
     private void OnDestroy()
     {
@@ -83,8 +106,11 @@ public class GameManager : SingletonMonoBehavior<GameManager>
             score = 0;
             lives = 3;
             coins = 0;
+            currentStreak = 0;
+            lastDestroyTime = -10f;
             OnScoreUpdated?.Invoke(score);
             OnLivesUpdated?.Invoke(lives);
+            OnCurrentStreakUpdated?.Invoke(currentStreak, streakDuration - (Time.time - lastDestroyTime));
             
             // Start gravity switch routine when the level loads.
             StartCoroutine(GravitySwitchRoutine());
@@ -125,6 +151,17 @@ public class GameManager : SingletonMonoBehavior<GameManager>
         }
     }
 
+    public int GetCurrentStreak() => currentStreak;
+    public void SetLastDestroyTime(float time)
+    {
+        lastDestroyTime = time;
+    }
+    public void IncrementStreak()
+    {
+        currentStreak = Math.Min(currentStreak + 1, maxStreak); // Cap streak at maxStreak
+        OnCurrentStreakUpdated?.Invoke(currentStreak, streakDuration - (Time.time - lastDestroyTime));
+    }
+    public float GetStreakDuration() => streakDuration;
     public int GetScore() => score;
     public int GetLives() => lives;
     public int GetBestScore() => bestScore;
