@@ -1105,10 +1105,10 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: "Astro-Shift: Gravity Inversion is a spin-off of the 1979 arcade hit, 'Asteroids'.
-    Your objective is to dodge and destrory asteroids to achieve a high score. \n\n-
-    Destroy asteroids quickly to earn a score multiplier. \n\n- Colect coins to purchase
-    powerful upgrades and abilities. \n\n- Be ready for the Gravity Shift, it might
-    catch you by surprise."
+    Your objective is to dodge and destroy asteroids to achieve a high score. \n\n-
+    Destroy asteroids quickly to earn a score multiplier. \n\n- Collect coins to
+    purchase powerful upgrades and abilities. \n\n- Be ready for the Gravity Shift,
+    it might catch you by surprise."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8c07c7764531e3e459ab96396d7b6bf8, type: 2}
   m_sharedMaterial: {fileID: -1260662883477943528, guid: 8c07c7764531e3e459ab96396d7b6bf8, type: 2}
