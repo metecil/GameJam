@@ -44,6 +44,8 @@ public class GameManager : SingletonMonoBehavior<GameManager>
     // --- Game Over Sound ---
     [SerializeField] private AudioClip gameOverSound;         // Sound to play when game is over
 
+    private Coroutine gravitySwitchCoroutine;
+
     protected override void Awake()
     {
         if (instance == null)
@@ -112,8 +114,22 @@ public class GameManager : SingletonMonoBehavior<GameManager>
             OnLivesUpdated?.Invoke(lives);
             OnCurrentStreakUpdated?.Invoke(currentStreak, streakDuration - (Time.time - lastDestroyTime));
             
-            // Start gravity switch routine when the level loads.
-            StartCoroutine(GravitySwitchRoutine());
+            GameObject countdownObj = GameObject.Find("CountDownText");
+            if (countdownObj != null)
+            {
+                countdownText = countdownObj.GetComponent<TextMeshProUGUI>();
+            }
+            else
+            {
+                Debug.LogWarning("CountdownText object not found. Ensure your countdown UI is named 'CountdownText'.");
+            }
+
+            // Restart the gravity switch coroutine.
+            if (gravitySwitchCoroutine != null)
+            {
+                StopCoroutine(gravitySwitchCoroutine);
+            }
+            gravitySwitchCoroutine = StartCoroutine(GravitySwitchRoutine());
         }
     }
 
